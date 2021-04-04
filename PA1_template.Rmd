@@ -133,3 +133,13 @@ xyplot(dataImputed$steps~dataImputed$interval|dataImputed$wDay,type = "l",
           layout=c(1,2))
 
 ```
+
+
+## Write to HTML file
+
+```{r write2HTML, echo=TRUE}
+library(knitr)
+knit("PA1_template.Rmd",output = NULL)
+rmarkdown::render('PA1_template.Rmd')
+
+```
