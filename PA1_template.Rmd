@@ -139,7 +139,7 @@ xyplot(dataImputed$steps~dataImputed$interval|dataImputed$wDay,type = "l",
 
 ```{r write2HTML, echo=TRUE}
 library(knitr)
-knit("PA1_template.Rmd",output = NULL)
+
 rmarkdown::render('PA1_template.Rmd')
 
 ```
