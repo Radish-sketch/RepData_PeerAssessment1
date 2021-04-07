@@ -29,35 +29,20 @@ data<-read.csv("activity.csv")
          main="Histogram of total number of steps taken per day",
          xlab="total steps per day")
     
+    meanSteps<-mean(sumByday)
+    medianSteps<-median(sumByday)
+    
 ```
+
+The mean number of steps taken each day is **`r meanSteps`**, the median number of steps taken each day is **`r medianSteps`**. 
+
+
+
 
 ## What is the average daily activity pattern? 
-
-The mean number of steps taken each day are    
-```{r meanDaily, echo=TRUE}
-
-    meanSteps<-tapply(data$steps, data$date, mean,na.rm=TRUE)
+ 
     
-    plot(meanSteps,type="l",
-         ylab="mean number of steps",
-         xlab="day")
-    
-    
-```
-
-The median number of steps taken each day are    
-```{r medianDaily, echo=TRUE}
-
-    medianSteps<-tapply(data$steps, data$date, median,na.rm=TRUE)
-    
-    plot(meanSteps,type="l",
-         ylab="Median number of steps",
-         xlab="Day")
-    
-    
-```  
-    
-Time series plot of the average number of steps taken
+Time series plot of the average number of steps taken per day
 ```{r dailyActivity, echo=TRUE}
     meanPerDay<-tapply(data$steps,data$date,mean,na.rm=TRUE)
     plot(meanPerDay,type="l",
@@ -65,22 +50,42 @@ Time series plot of the average number of steps taken
          xlab="day")
 ```
 
-The 5-minute interval that, on average, contains the maximum number of steps
+Time series plot of the average number of steps
+```{r stepsVsTime, echo=TRUE}
+   
+    plot(data$steps,type="l",
+         ylab="number of steps in 5 min",
+         xlab="interval")
+```
+
+
+
+
 ```{r maxSetup, echo=TRUE}
-    data[which.max(data$steps),]
+
+    maxStep<-data[which.max(data$steps),]
+    maxInterval<-which.max(data$steps)
+    
 ```
+The 5-minute interval that, on average, contains the maximum number of steps is **`r maxStep[[1]]`**.
 
 
-The maximum steps per 5 minutes on average is on
+The maximum steps per 5 minutes on average is on **`r maxStep[[2]]`**, interval **`r maxStep[[3]]`**. The number **`r maxInterval`** in the dataset.
 
-```{r aveMaxSetup, echo=TRUE}
-    which.max(meanPerDay)
-```
 
 ## Imputing missing values
+
+Number of NA values can be found 
+```{r viewNa, echo=TRUE}
+
+a<-table(is.na(data$steps))
+a
+
+```
+There are **`r a[[2]]`** NA values in total. And either a whole day is NA or there's no NA in that day,replace NA value with the mean of all the non-NA steps in 5 min interval. codes not shown here.
+
 ```{r imputing, echo=TRUE}
-#number of NA values , either a whole day is NA or there's no NA in that day
-#replace NA value with the mean of all the non-NA steps in 5 min interval
+
 
 naRow<-which(is.na(data$steps))
 
@@ -112,10 +117,11 @@ Histogram of the total number of steps taken each day after missing values are i
     hist(sumBydayIm,
          main="Total number of steps each day after missing value are imputed", 
          xlab="Total number of steps")
+    meanImputed<-mean(sumBydayIm)
     
 ```
 
-
+The mean value of total number of steps taken each day before imputing is **`r mean(sumByday)`**,  after imputing is **`r meanImputed`**.
 
 
 ## Are there differences in activity patterns between weekdays and weekends?
@@ -139,3 +145,4 @@ xyplot(dataImputed$steps~dataImputed$interval|dataImputed$wDay,type = "l",
 
 ## Write to HTML file
 
+with code rmarkdown::render("PA1_template.Rmd")
